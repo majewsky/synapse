@@ -118,11 +118,9 @@ class LoggingConfig(Config):
                     DEFAULT_LOG_CONFIG.substitute(log_file=config["log_file"])
                 )
 
-    def setup_logging(self):
-        setup_logging(self.log_config, self.log_file, self.verbosity)
 
-
-def setup_logging(log_config=None, log_file=None, verbosity=None):
+def setup_logging(log_config=None, log_file=None, verbosity=None,
+                  redirect_stdio=False):
     log_format = (
         "%(asctime)s - %(name)s - %(lineno)d - %(levelname)s - %(request)s"
         " - %(message)s"
@@ -183,4 +181,5 @@ def setup_logging(log_config=None, log_file=None, verbosity=None):
     #
     # However this may not be too much of a problem if we are just writing to a file.
     observer = STDLibLogObserver()
-    globalLogBeginner.beginLoggingTo([observer])
+    globalLogBeginner.beginLoggingTo([observer],
+                                     redirectStandardIO=redirect_stdio)
